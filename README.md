@@ -1,2 +1,2 @@
 # APBD
-Aplikacje Baz Danych
+__Mateusz Godlewski, 24c, s19282__
