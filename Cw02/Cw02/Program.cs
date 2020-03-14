@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Xml.Linq;
+
 
 namespace Cw02
 {
@@ -13,79 +12,37 @@ namespace Cw02
             try
             {
                 string csvPath = "data.csv";
-                string xmlPath = "result.xml";
+                string outPath = "result.xml";
                 string outFormat = "xml";
                 try
                 {
                     csvPath = args[0];
-                    xmlPath = args[1];
+                    outPath = args[1];
                     outFormat = args[2];
                 }
                 catch (Exception) { }
 
-                if (File.Exists(csvPath) && Directory.Exists(xmlPath))
+                if (File.Exists(csvPath) && Directory.Exists(outPath))
                 {
-                    string[] students = File.ReadAllLines(csvPath);
-                    List<String> toLog = new List<string>();
-                    Dictionary<String,String> toOutputFile = new Dictionary<string, string>();
-
-                    foreach (string student in students)
+                    List<String> data = checkCorrectness(csvPath);
+                    switch (outFormat)
                     {
-                        if (student.Split(",").Length != 9)
-                            toLog.Add(String.Concat("[Number of columns] " + student));
-                        foreach (string data in student.Split(","))
+                        case "xml":
                         {
-                            if (data.Equals(""))
-                            {
-                                toLog.Add(String.Concat("[Empty values] " + student));
-                                break;
-                            }
+                                toXML.Save(data, outPath);
+                            break;
                         }
-                        string key = String.Concat(student.Split(",")[0] + "," + student.Split(",")[1] + "," + student.Split(",")[4]);
-                        if (toOutputFile.ContainsKey(key))
+                        case "json":
                         {
-                            toLog.Add(String.Concat("[Duplicate values] " + student));
+                            
+                            break;
                         }
-                        else
+                        default:
                         {
-                            toOutputFile.Add(key, student);
+                            Console.WriteLine("Unsupported output format");
+                            break;
                         }
                     }
-                    foreach(string error in toLog)
-                    {
-                        ErrorLogging(new Exception(error));
-                    }
-
-
-                    XElement xml = new XElement("Uczelnia",
-                        new XAttribute("createdAt", DateTime.Now.ToString("dd/MM/yyyy")),
-                        new XAttribute("author", "Mateusz Godlewski"),
-                        from str in toOutputFile.Values
-                        let fields = str.Split(",")
-                        select new XElement("studenci",
-                            new XAttribute("indexNumber", "s" + fields[4]),
-                            new XElement("fname", fields[0]),
-                            new XElement("lname", fields[1]),
-                            new XElement("birthdate", new DateTime(Int32.Parse(fields[5].Split("-")[0]), Int32.Parse(fields[5].Split("-")[1]), Int32.Parse(fields[5].Split("-")[2])).ToString("dd.MM.yyyy")),
-                            new XElement("e-mails", fields[6]),
-                            new XElement("mothersname", fields[7]),
-                            new XElement("fathersname", fields[8]),
-                            new XElement("studies",
-                                new XElement("name", fields[2]),
-                                new XElement("mode", fields[3])
-                                )
-                            ),
-                        new XElement("activeStudies",
-                            from str in toOutputFile.Values
-                            let fields = str.Split(",")
-                            group fields by fields[2] into groupped
-                            select new XElement("studies",
-                                new XAttribute("name", groupped.Key),
-                                new XAttribute("numberOfStudents",groupped.Count())
-                                )
-                           )
-                        );
-                    xml.Save(String.Concat(xmlPath + "result.xml"));
                 }
                 else
                 {
@@ -93,7 +50,7 @@ namespace Cw02
                     {
                         throw new FileNotFoundException("Plik nie istnieje");
                     }
-                    if (!Directory.Exists(xmlPath))
+                    if (!Directory.Exists(outPath))
                     {
                         throw new ArgumentException("Podana ścieżka jest niepoprawna");
                     }
@@ -113,10 +70,48 @@ namespace Cw02
                 File.Create(logPath).Dispose();
             }
             StreamWriter sw = File.AppendText(logPath);
-            sw.WriteLine("Start" + DateTime.Now);
+            sw.WriteLine("Start " + DateTime.Now);
             sw.WriteLine("Error Message: " + ex.Message);
-            sw.WriteLine("END" + DateTime.Now);
+            sw.WriteLine("END " + DateTime.Now);
             sw.Close();
+        }
+
+        public static List<String> checkCorrectness(String csvPath)
+        {
+            string[] students = File.ReadAllLines(csvPath);
+            Dictionary<String, String> toOutputFile = new Dictionary<string, string>();
+
+            foreach (string student in students)
+            {
+                if (student.Split(",").Length != 9)
+                {
+                    ErrorLogging(new Exception(String.Concat("[Number of columns] " + student)));
+                    continue;
+                }
+                bool foundError = false;
+                foreach (string data in student.Split(","))                {
+                    if (data.Equals(""))
+                    {
+                        ErrorLogging(new Exception(String.Concat("[Empty values] " + student)));
+                        foundError = true;
+                        break;
+                    }
+                }
+                if (foundError)
+                    continue;
+
+                String key = String.Concat(student.Split(",")[0] + "," + student.Split(",")[1] + "," + student.Split(",")[4]);
+                
+                if (toOutputFile.ContainsKey(key))
+                {
+                    ErrorLogging(new Exception(String.Concat("[Duplicate values] " + student)));
+                }
+                else
+                {
+                    toOutputFile.Add(key, student);
+                }
+            }
+            return new List<string>(toOutputFile.Keys);
         }
 
     }
