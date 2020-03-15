@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
 
 namespace Cw02
 {
@@ -19,10 +16,7 @@ namespace Cw02
             studies = new Studies(studiesName, studiesMode);
             this.birthDate = birthDate;
         }
-        public Student()
-        {
-            indexNumber = "1";
-        }
+
         public String indexNumber { get; set; }
         public String fname { get; set; }
         public String lname { get; set; }
@@ -31,10 +25,5 @@ namespace Cw02
         public String mothersName { get; set; }
         public String fathersName { get; set; }
         public Studies studies { get; set; }
-
-        public override string ToString()
-        {
-            return indexNumber + " " + fname + " " + lname + " " + birthDate + " " + email + " " + mothersName + " " + fathersName + " " + studies.ToString();
-        }
     }
 }

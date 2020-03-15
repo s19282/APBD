@@ -12,10 +12,5 @@ namespace Cw02
 
         public String name { get; set; }
         public String mode { get; set; }
-
-        public override string ToString()
-        {
-            return name+" "+mode;
-        }
     }
 }

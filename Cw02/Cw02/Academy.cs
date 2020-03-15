@@ -12,15 +12,17 @@ namespace Cw02
             date = DateTime.Now.ToString("dd.MM.yyyy");
             author = "Mateusz Godlewski";
             this.students = students.ToArray();
-            List<activeStudies> sadf = new List<activeStudies>();
-            var tmp = from abc in students
-                      group abc by abc.studies.name into groups
+            //Do poprawy///////
+            List<activeStudies> list = new List<activeStudies>();
+            var tmp = from student in students
+                      group student by student.studies.name into groups
                       select new activeStudies(groups.Key, groups.Count());
-            foreach(var abc in tmp)
+            foreach(var studies in tmp)
             {
-                sadf.Add(new activeStudies(abc.name, abc.numberOfStudents));
+                list.Add(new activeStudies(studies.name, studies.numberOfStudents));
             }
-            activeStudies = sadf.ToArray();
+            activeStudies = list.ToArray();
+            ///////////////////
         }
 
         [JsonPropertyName("createdAt")]
