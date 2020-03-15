@@ -78,7 +78,7 @@ namespace Cw02
 
         public static List<String> checkCorrectness(String csvPath)
         {
-            string[] students = File.ReadAllLines(csvPath);
+            string[] students = File.ReadAllLines(csvPath, System.Text.Encoding.UTF8);
             Dictionary<String, String> toOutputFile = new Dictionary<string, string>();
 
             foreach (string student in students)

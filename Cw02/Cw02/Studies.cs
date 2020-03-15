@@ -9,6 +9,11 @@ namespace Cw02
             this.name = name;
             this.mode = mode;
         }
+        public Studies()
+        {
+            name = null;
+            mode = null;
+        }
 
         public String name { get; set; }
         public String mode { get; set; }

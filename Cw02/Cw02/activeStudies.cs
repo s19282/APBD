@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Serialization;
 
 namespace Cw02
 {
@@ -9,7 +10,15 @@ namespace Cw02
             this.numberOfStudents = numberOfStudents;
             this.name = name;
         }
+        public activeStudies()
+        {
+            name = null;
+            numberOfStudents = 0;
+        }
+        [XmlAttribute]
+
         public String name { get; set; }
+        [XmlAttribute]
         public int numberOfStudents { get; set; }
     }
 }

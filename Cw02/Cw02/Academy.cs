@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
+using System.Xml.Serialization;
 
 namespace Cw02
 {
@@ -24,12 +25,23 @@ namespace Cw02
             activeStudies = list.ToArray();
             ///////////////////
         }
+        public Academy()
+        {
+            date = null;
+            author = null;
+            students = null;
+            activeStudies = null;
+        }
 
         [JsonPropertyName("createdAt")]
+        [XmlAttribute(AttributeName = "createdAt")]
         public string date { get; set; }
+        [XmlAttribute]
         public string author { get; set; }
         [JsonPropertyName("studenci")]
+        [XmlArray("studenci")]
         public Student[] students { get; set; }
+        [XmlArrayItem("studies")]
         public activeStudies[] activeStudies { get; set; }
 
 

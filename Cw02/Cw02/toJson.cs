@@ -22,7 +22,7 @@ namespace Cw02
                 uczelnia = academy
             };
             var jsonString = JsonSerializer.Serialize(academyWrapper);
-            File.WriteAllText(String.Concat(path + "result.json"), jsonString);
+            File.WriteAllText(String.Concat(path + "result.json"), jsonString, System.Text.Encoding.UTF8);
         }
     }
 }
