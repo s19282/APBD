@@ -2,7 +2,7 @@
   "profiles": {
     "Cw02": {
       "commandName": "Project",
-      "commandLineArgs": "C:\\Users\\Mateusz\\Desktop\\PJATK\\Rok2\\Semestr2\\APBD\\2_csvtoxml\\dane.csv C:\\Users\\Mateusz\\Desktop\\ xml "
+      "commandLineArgs": "C:\\Users\\Mateusz\\Desktop\\PJATK\\Rok2\\Semestr2\\APBD\\2_csvtoxml\\dane.csv C:\\Users\\Mateusz\\Desktop\\ json"
     }
   }
 }

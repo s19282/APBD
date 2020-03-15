@@ -34,7 +34,7 @@ namespace Cw02
                         }
                         case "json":
                         {
-                            
+                                toJson.Save(data, outPath);
                             break;
                         }
                         default:
@@ -111,7 +111,7 @@ namespace Cw02
                     toOutputFile.Add(key, student);
                 }
             }
-            return new List<string>(toOutputFile.Keys);
+            return new List<string>(toOutputFile.Values);
         }
 
     }
