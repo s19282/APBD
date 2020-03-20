@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Cw03.DAL;
 using Cw03.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +9,16 @@ namespace Cw03.Controllers
     [Route("api/students")]
     public class StudentsController : ControllerBase
     {
-        [HttpGet]
-        public string GetStudent(string orderBy)
+        private readonly IDbService _dbService;
+        public StudentsController(IDbService dbService)
         {
-            return $"Kowalski, Malewski, Andrzejewski sortowanie={orderBy}";
+            _dbService = dbService;
+        }
+
+        [HttpGet]
+        public IActionResult GetStudents(string orderBy)
+        {
+            return Ok(_dbService.GetStudents());
         }
         [HttpPost]
         public IActionResult CreateStudent(Student student)
