@@ -34,6 +34,25 @@ namespace Cw03.Controllers
             }
             return Ok(_dbService.GetStudents());
         }
+        [HttpGet("{IndexNumber}")]
+        public IActionResult GetStudentsSemester(String indexNumber)
+        {
+            string res = "";
+                        using (var con = new SqlConnection("[Data Source=db-mssql;Initail Catalog=s19282;Integrated Security=True]"))
+            using (var com = new SqlCommand() )
+            {
+                com.Connection = con;
+                com.CommandText = "select * from Enrollment inner join Student on Enrollment.idEnrollment=Student.idEnrollment where IndexNumber=@idnexNumber";
+
+                con.Open();
+                var dr = con.ExecuteReader();
+                while(dr.Read())
+                {
+                    res+="Semester: "+dr["Semester"]+", Start Date: "+dr["StartDate"].ToString();
+                }
+            }
+
+        }
         [HttpPost]
         public IActionResult CreateStudent(Student student)
         {
