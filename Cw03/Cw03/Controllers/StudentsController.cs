@@ -18,6 +18,20 @@ namespace Cw03.Controllers
         [HttpGet]
         public IActionResult GetStudents(string orderBy)
         {
+            using (var con = new SqlConnection("[Data Source=db-mssql;Initail Catalog=s19282;Integrated Security=True]"))
+            using (var com = new SqlCommand() )
+            {
+                com.Connection = con;
+                com.CommandText = "select * from Students";
+
+                con.Open();
+                var dr = con.ExecuteReader();
+                while(dr.Read())
+                {
+                    var st = new Student();
+                    st.FirstName = dr["FirstName"].ToString();
+                }
+            }
             return Ok(_dbService.GetStudents());
         }
         [HttpPost]
