@@ -35,15 +35,15 @@ namespace Cw03.Controllers
             return Ok(_dbService.GetStudents());
         }
         [HttpGet("{IndexNumber}")]
-        public IActionResult GetStudentsSemester(String indexNumber)
+        public IActionResult GetStudentsSemester(String IndexNumber)
         {
             string res = "";
                         using (var con = new SqlConnection("[Data Source=db-mssql;Initail Catalog=s19282;Integrated Security=True]"))
             using (var com = new SqlCommand() )
             {
                 com.Connection = con;
-                com.CommandText = "select * from Enrollment inner join Student on Enrollment.idEnrollment=Student.idEnrollment where IndexNumber=@idnexNumber";
-
+                com.CommandText = "select * from Enrollment inner join Student on Enrollment.idEnrollment=Student.idEnrollment where IndexNumber=@IndexNumber";
+                com.Parameters.AddWithValue("IndexNumber",IndexNumber);
                 con.Open();
                 var dr = con.ExecuteReader();
                 while(dr.Read())
