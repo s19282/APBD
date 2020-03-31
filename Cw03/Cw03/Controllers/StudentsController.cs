@@ -50,6 +50,7 @@ namespace Cw03.Controllers
                 {
                     res+="Semester: "+dr["Semester"]+", Start Date: "+dr["StartDate"].ToString();
                 }
+                return Ok(res);
             }
 
         }
