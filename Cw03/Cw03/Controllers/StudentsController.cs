@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using Cw03.DAL;
 using Cw03.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,7 @@ namespace Cw03.Controllers
                 com.CommandText = "select * from Students";
 
                 con.Open();
-                var dr = con.ExecuteReader();
+                var dr = com.ExecuteReader();
                 while(dr.Read())
                 {
                     var st = new Student();
@@ -45,7 +46,7 @@ namespace Cw03.Controllers
                 com.CommandText = "select * from Enrollment inner join Student on Enrollment.idEnrollment=Student.idEnrollment where IndexNumber=@IndexNumber";
                 com.Parameters.AddWithValue("IndexNumber",IndexNumber);
                 con.Open();
-                var dr = con.ExecuteReader();
+                var dr = com.ExecuteReader();
                 while(dr.Read())
                 {
                     res+="Semester: "+dr["Semester"]+", Start Date: "+dr["StartDate"].ToString();
