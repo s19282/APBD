@@ -1,8 +1,8 @@
-﻿using System;
-using System.Data.SqlClient;
-using Cw03.DAL;
+﻿using Cw03.DAL;
 using Cw03.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Data.SqlClient;
 
 namespace Cw03.Controllers
 {
@@ -17,17 +17,17 @@ namespace Cw03.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetStudents(string orderBy)
+        public IActionResult GetStudents()
         {
-            using (var con = new SqlConnection("[Data Source=db-mssql;Initail Catalog=s19282;Integrated Security=True]"))
-            using (var com = new SqlCommand() )
+            using (var con = new SqlConnection("Data Source=db-mssql;Initial Catalog=s19282;Integrated Security=True"))
+            using (var com = new SqlCommand())
             {
                 com.Connection = con;
-                com.CommandText = "select * from Students";
+                com.CommandText = "select * from Student";
 
                 con.Open();
                 var dr = com.ExecuteReader();
-                while(dr.Read())
+                while (dr.Read())
                 {
                     var st = new Student();
                     st.FirstName = dr["FirstName"].ToString();
@@ -39,17 +39,18 @@ namespace Cw03.Controllers
         public IActionResult GetStudentsSemester(String IndexNumber)
         {
             string res = "";
-                        using (var con = new SqlConnection("[Data Source=db-mssql;Initail Catalog=s19282;Integrated Security=True]"))
-            using (var com = new SqlCommand() )
+
+            using (var con = new SqlConnection("[Data Source=db-mssql;Initail Catalog=s19282;Integrated Security=True]"))
+            using (var com = new SqlCommand())
             {
                 com.Connection = con;
                 com.CommandText = "select * from Enrollment inner join Student on Enrollment.idEnrollment=Student.idEnrollment where IndexNumber=@IndexNumber";
-                com.Parameters.AddWithValue("IndexNumber",IndexNumber);
+                com.Parameters.AddWithValue("IndexNumber", IndexNumber);
                 con.Open();
                 var dr = com.ExecuteReader();
-                while(dr.Read())
+                while (dr.Read())
                 {
-                    res+="Semester: "+dr["Semester"]+", Start Date: "+dr["StartDate"].ToString();
+                    res += "Semester: " + dr["Semester"] + ", Start Date: " + dr["StartDate"].ToString();
                 }
                 return Ok(res);
             }
@@ -64,7 +65,7 @@ namespace Cw03.Controllers
         [HttpPut("{id}")]
         public IActionResult updateStudent(int id)
         {
-            if(id == 1)
+            if (id == 1)
             {
                 return Ok("Aktualizacja zakończona");
             }
