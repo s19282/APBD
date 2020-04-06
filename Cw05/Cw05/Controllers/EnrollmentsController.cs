@@ -16,7 +16,6 @@ namespace Cw05.Controllers
         [HttpPost]
         public IActionResult EnrollStudent(EnrollStudentRequest request)
         {
-            var student = new Student(request);
             var response = new EnrollStudentResponse();
             using (var con = new SqlConnection("Data Source=db-mssql;Initial Catalog=s19282;Integrated Security=True"))
             using (var com = new SqlCommand())
@@ -107,5 +106,33 @@ namespace Cw05.Controllers
 
             return Ok(response);
         }
+        [HttpPost]
+        [Route("/promotions")]
+        public IActionResult PromoteStudents(PromoteStudentsRequest request)
+        {
+            var response = new PromoteStudentsResponse();
+            using (var con = new SqlConnection("Data Source=db-mssql;Initial Catalog=s19282;Integrated Security=True"))
+            using (var com = new SqlCommand())
+            {
+                com.Connection = con;
+                con.Open();
+                var tran = con.BeginTransaction();
+                com.Transaction = tran;
+                try
+                {
+                    com.CommandText = "PromoteStudents";
+                    com.CommandType = System.Data.CommandType.StoredProcedure;
+                    com.Parameters.AddWithValue("@Studies", request.Studies);
+                    com.Parameters.AddWithValue("@Semester", request.Semester);
+                    var dr = com.ExecuteNonQuery();
+                }
+                catch(SqlException exc)
+                {
+                    return NotFound("404");
+                }
+              
+                return Ok();
+        }
+
     }
 }
