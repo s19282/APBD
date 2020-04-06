@@ -13,7 +13,7 @@ namespace Cw05.Services
     {
         public void EnrollStudent(EnrollStudentRequest request)
         {
-            var st = new Student();
+            var st = new Student(request);
             st.FirstName = request.FirstName;
 
 
