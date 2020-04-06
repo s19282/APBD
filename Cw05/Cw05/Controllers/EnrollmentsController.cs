@@ -106,8 +106,7 @@ namespace Cw05.Controllers
 
             return Ok(response);
         }
-        [HttpPost]
-        [Route("/promotions")]
+        [HttpPost("promotions")]
         public IActionResult PromoteStudents(PromoteStudentsRequest request)
         {
             var response = new PromoteStudentsResponse();
@@ -124,14 +123,22 @@ namespace Cw05.Controllers
                     com.CommandType = System.Data.CommandType.StoredProcedure;
                     com.Parameters.AddWithValue("@Studies", request.Studies);
                     com.Parameters.AddWithValue("@Semester", request.Semester);
+                    var dataSet = new System.Data.DataSet();
+                    using (var adapter = new SqlDataAdapter(com))
+                    {
+                        adapter.Fill(dataSet);
+                    }
                     var dr = com.ExecuteNonQuery();
+                    Console.WriteLine("test");
                 }
-                catch(SqlException exc)
+                catch (SqlException exc)
                 {
+                    Console.WriteLine(exc.Message);
                     return NotFound("404");
                 }
-              
-                return Ok();
+
+                return Ok(response);
+            }
         }
 
     }
