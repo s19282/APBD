@@ -88,12 +88,11 @@ namespace Cw05.Controllers
                     response.Semester = 1;
                     response.StartDate = date;
 
-                    com.CommandText = "insert into Student(IndexNumber,Firstname,LastName,BirdthDate,IdEnrollment)" +
+                    com.CommandText = "insert into Student(IndexNumber,Firstname,LastName,BirthDate,IdEnrollment)" +
                         " values(@index,@fname,@lname,@bDate,@idEnrollment)";
-                    com.Parameters.AddWithValue("index", request.IndexNumber);
                     com.Parameters.AddWithValue("fname", request.FirstName);
                     com.Parameters.AddWithValue("lname", request.LastName);
-                    com.Parameters.AddWithValue("bDate", request.BirthDate);
+                    com.Parameters.AddWithValue("bDate", request.BirthDate.ToString("yyyy-MM-dd"));
                     com.ExecuteNonQuery();
 
                     dr.Close();
