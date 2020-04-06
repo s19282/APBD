@@ -50,6 +50,7 @@ namespace Cw05.Controllers
 
                     if (!dr.Read())
                     {
+                        date = DateTime.Today;
                         dr.Close();
                         com.CommandText = "select max(IdEnrollment) as 'id' from Enrollment";
                         dr = com.ExecuteReader();
@@ -58,10 +59,9 @@ namespace Cw05.Controllers
                         else
                             idEnrollment = 1;
                         dr.Close();
-                        com.CommandText = "Insert into Enrollment(IdEnrollment,Semester,IdStudy,StartDate) " +
-                            "values (@idEnrollment,1,@idStudy,@date);";
-                        date = DateTime.Now;
-                        com.Parameters.AddWithValue("date", date.ToString("yyyy-mm-dd"));
+                        com.CommandText = "Insert into Enrollment(IdEnrollment,Semester,IdStudy,StartDate) "+
+                            "values (@idEnrollment,1,@idStudy,@date)";
+                        com.Parameters.AddWithValue("date", date.ToString("yyyy-MM-dd"));
                         com.Parameters.AddWithValue("idEnrollment", idEnrollment);
                         dr = com.ExecuteReader();
                         dr.Close();
@@ -69,7 +69,6 @@ namespace Cw05.Controllers
                     else
                     {
                         date = (DateTime)dr["StartDate"];
-                        //date = DateTime.Parse((string)dr["StartDate"]);
                         idEnrollment = (int)dr["IdEnrollment"];
                         dr.Close();
                     }
@@ -90,20 +89,19 @@ namespace Cw05.Controllers
                     response.StartDate = date;
 
                     com.CommandText = "insert into Student(IndexNumber,Firstname,LastName,BirdthDate,IdEnrollment)" +
-                        " values(@index,@fname,@lname,@bDate,@enrollId)";
+                        " values(@index,@fname,@lname,@bDate,@idEnrollment)";
                     com.Parameters.AddWithValue("index", request.IndexNumber);
                     com.Parameters.AddWithValue("fname", request.FirstName);
                     com.Parameters.AddWithValue("lname", request.LastName);
                     com.Parameters.AddWithValue("bDate", request.BirthDate);
-                    com.Parameters.AddWithValue("enrollId", idEnrollment);
                     com.ExecuteNonQuery();
-
 
                     dr.Close();
                     tran.Commit();
                 }
                 catch (SqlException exc)
                 {
+                    Console.WriteLine(exc.Message);
                     tran.Rollback();
                 }
             }
