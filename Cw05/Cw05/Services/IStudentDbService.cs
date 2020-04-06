@@ -1,4 +1,5 @@
 ﻿using Cw05.DTOs.Requests;
+using Cw05.DTOs.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace Cw05.Services
 {
     public interface IStudentDbService
     {
-        void EnrollStudent(EnrollStudentRequest request);
-        void PromoteStudents(int semester, string studies);
+        EnrollStudentResponse EnrollStudent(EnrollStudentRequest request);
+        PromoteStudentsResponse PromoteStudents(PromoteStudentsRequest request);
     }
 }
