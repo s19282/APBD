@@ -37,7 +37,7 @@ namespace Cw05.Controllers
                         return BadRequest("Studia nie istnieją");
                     }
                     int idStudies = (int)dr["IdStudy"];
-
+                    dr.Close();
                     com.CommandText = "select IdEnrollment,StartDate from Enrollment where Semester=1 and " +
                         "idStudy=@idStudy and StartDate=(select max(startDate) from Enrollment " +
                         "where Semester=1 and idStudy=@idStudy)";
@@ -62,11 +62,14 @@ namespace Cw05.Controllers
                         com.Parameters.AddWithValue("date", date.ToString("yyyy-mm-dd"));
                         com.Parameters.AddWithValue("idEnrollment", idEnrollment);
                         dr = com.ExecuteReader();
+                        dr.Close();
                     }
                     else
                     {
-                        date = DateTime.Parse((string)dr["StartDate"]);
+                        date = (DateTime)dr["StartDate"];
+                        //date = DateTime.Parse((string)dr["StartDate"]);
                         idEnrollment = (int)dr["IdEnrollment"];
+                        dr.Close();
                     }
 
                     com.CommandText = "select * from Student where IndexNumber=@index";
@@ -75,9 +78,10 @@ namespace Cw05.Controllers
                     if(dr.Read())
                     {
                         tran.Rollback();
+                        dr.Close();
                         return BadRequest("Student o podanym indeksie już istnieje!");
                     }
-
+                    dr.Close();
                     response.IdEnrollment = idEnrollment;
                     response.IdStudy = idStudies;
                     response.Semester = 1;
@@ -93,7 +97,7 @@ namespace Cw05.Controllers
                     com.ExecuteNonQuery();
 
 
-
+                    dr.Close();
                     tran.Commit();
                 }
                 catch (SqlException exc)

@@ -49,8 +49,6 @@ namespace Cw05.Services
                 }
             }
             var response = new EnrollStudentResponse();
-            response.LastName = request.FirstName;
-
 
             //return Ok(response);
         }
