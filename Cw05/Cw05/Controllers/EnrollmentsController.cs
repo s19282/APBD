@@ -33,6 +33,7 @@ namespace Cw05.Controllers
 
                     if (!dr.Read())
                     {
+                        dr.Close();
                         tran.Rollback();
                         return BadRequest("Studia nie istnieją");
                     }
@@ -43,19 +44,20 @@ namespace Cw05.Controllers
                         "where Semester=1 and idStudy=@idStudy)";
                     com.Parameters.AddWithValue("idStudy", idStudies);
                     dr = com.ExecuteReader();
-
+                   
                     int idEnrollment = -1;
                     DateTime date;
 
                     if (!dr.Read())
                     {
-                        com.CommandText = "(select max(IdEnrollment) from enrollment)";
+                        dr.Close();
+                        com.CommandText = "select max(IdEnrollment) as 'id' from Enrollment";
                         dr = com.ExecuteReader();
                         if (dr.Read())
-                            idEnrollment = (int)dr[idEnrollment] + 1;
+                            idEnrollment = (int)dr["id"]+1;
                         else
                             idEnrollment = 1;
-
+                        dr.Close();
                         com.CommandText = "Insert into Enrollment(IdEnrollment,Semester,IdStudy,StartDate) " +
                             "values (@idEnrollment,1,@idStudy,@date);";
                         date = DateTime.Now;
@@ -77,8 +79,8 @@ namespace Cw05.Controllers
                     dr = com.ExecuteReader();
                     if(dr.Read())
                     {
-                        tran.Rollback();
                         dr.Close();
+                        tran.Rollback();
                         return BadRequest("Student o podanym indeksie już istnieje!");
                     }
                     dr.Close();
