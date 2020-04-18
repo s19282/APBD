@@ -24,5 +24,8 @@ namespace Cw05.Models
             this.Studies = esr.Studies;
         }
 
+        public Student()
+        {
+        }
     }
 }

@@ -51,7 +51,7 @@ namespace Cw05
             {
                 if(!context.Request.Headers.ContainsKey("Index"))
                 {
-                    context.Response.StatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status401Unauthorized;
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     await context.Response.WriteAsync("Musisz podac numer indeksu");
                     return;
                 }
@@ -59,7 +59,9 @@ namespace Cw05
                 var student = service.GetStudent(index);
                 if(student == null)
                 {
-                    //error
+                    context.Response.StatusCode = StatusCodes.Status404NotFound;
+                    await context.Response.WriteAsync("Nie znaleziono studenta w bazie danych");
+                    return;
                 }
                 await next();
             });

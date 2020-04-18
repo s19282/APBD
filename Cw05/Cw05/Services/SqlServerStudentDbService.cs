@@ -10,24 +10,33 @@ namespace Cw05.Services
     {
         public Student GetStudent(string index)
         {
-            //dbconnection
-            if(true)
+            int id = Int32.Parse(index.Substring(1));
+            using (var con = new SqlConnection("Data Source=db-mssql;Initial Catalog=s19282;Integrated Security=True"))
+            using (var com = new SqlCommand())
             {
-                return new Student();
+                com.Connection = con;
+                con.Open();
+                try
+                {
+                    com.CommandText = "select * from Student where IndexNumber=@id";
+                    com.Parameters.AddWithValue("id", id);
+                    var dr = com.ExecuteReader();
+                    if (!dr.Read())
+                    {
+                        dr.Close();
+                        return null;
+                    }
+
+                    dr.Close();
+                }
+                catch (SqlException e)
+                {
+                    Console.WriteLine(e.Message);
+                    return null;
+                }
             }
-            return null;
+            return new Student();
         }
-
-        //public void EnrollStudent(EnrollStudentRequest request)
-        //{
-
-        //}
-
-
-        //public void PromoteStudents(PromoteStudentsRequest request)
-        //{
-
-        //}
 
         EnrollStudentResponse IStudentDbService.EnrollStudent(EnrollStudentRequest request)
         {
