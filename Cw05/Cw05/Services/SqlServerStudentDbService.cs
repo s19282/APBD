@@ -1,5 +1,6 @@
 ﻿using Cw05.DTOs.Requests;
 using Cw05.DTOs.Responses;
+using Cw05.Models;
 using System;
 using System.Data.SqlClient;
 
@@ -7,15 +8,25 @@ namespace Cw05.Services
 {
     public class SqlServerStudentDbService : IStudentDbService
     {
+        public Student GetStudent(string index)
+        {
+            //dbconnection
+            if(true)
+            {
+                return new Student();
+            }
+            return null;
+        }
+
         //public void EnrollStudent(EnrollStudentRequest request)
         //{
-            
+
         //}
 
 
         //public void PromoteStudents(PromoteStudentsRequest request)
         //{
-            
+
         //}
 
         EnrollStudentResponse IStudentDbService.EnrollStudent(EnrollStudentRequest request)
@@ -140,5 +151,7 @@ namespace Cw05.Services
             }
             return new PromoteStudentsResponse();
         }
+
+
     }
 }
