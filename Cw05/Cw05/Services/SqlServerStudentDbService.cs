@@ -1,17 +1,24 @@
 ﻿using Cw05.DTOs.Requests;
 using Cw05.DTOs.Responses;
-using Cw05.Models;
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Cw05.Services
 {
     public class SqlServerStudentDbService : IStudentDbService
     {
-        public void EnrollStudent(EnrollStudentRequest request)
+        //public void EnrollStudent(EnrollStudentRequest request)
+        //{
+            
+        //}
+
+
+        //public void PromoteStudents(PromoteStudentsRequest request)
+        //{
+            
+        //}
+
+        EnrollStudentResponse IStudentDbService.EnrollStudent(EnrollStudentRequest request)
         {
             using (var con = new SqlConnection("Data Source=db-mssql;Initial Catalog=s19282;Integrated Security=True"))
             using (var com = new SqlCommand())
@@ -98,11 +105,11 @@ namespace Cw05.Services
                     Console.WriteLine(exc.Message);
                     tran.Rollback();
                 }
+                return new EnrollStudentResponse();
             }
         }
 
-
-        public void PromoteStudents(PromoteStudentsRequest request)
+        PromoteStudentsResponse IStudentDbService.PromoteStudents(PromoteStudentsRequest request)
         {
             using (var con = new SqlConnection("Data Source=db-mssql;Initial Catalog=s19282;Integrated Security=True"))
             using (var com = new SqlCommand())
@@ -131,5 +138,7 @@ namespace Cw05.Services
                     //return NotFound("404");
                 }
             }
+            return new PromoteStudentsResponse();
+        }
     }
 }

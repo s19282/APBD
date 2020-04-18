@@ -1,10 +1,7 @@
 ﻿using Cw05.DTOs.Requests;
 using Cw05.DTOs.Responses;
-using Cw05.Models;
 using Cw05.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Data.SqlClient;
 
 namespace Cw05.Controllers
 {
