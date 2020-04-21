@@ -15,6 +15,15 @@ namespace Cw05.Models
 
         public string Studies { get; set; }
 
+
+        public Student(string index,string fname,string lname,DateTime bdate,string studies)
+        {
+            IndexNumber = index;
+            FirstName = fname;
+            LastName = lname;
+            BirthDate = bdate;
+            Studies = studies;
+        }
         public Student(EnrollStudentRequest esr)
         {
             this.IndexNumber = esr.IndexNumber;
