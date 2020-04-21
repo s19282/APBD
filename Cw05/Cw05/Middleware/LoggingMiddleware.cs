@@ -22,6 +22,7 @@ namespace Cw05.Middleware
             context.Request.EnableBuffering();
             if(context.Request != null)
             {
+
                 string path = context.Request.Path;
                 string method = context.Request.Method;
                 string queryString = context.Request.QueryString.ToString();
