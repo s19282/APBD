@@ -28,7 +28,6 @@ namespace Cw05.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Roles = "admin")]
         public IActionResult GetStudents()
         {
             var list = new List<Student>();
@@ -63,13 +62,14 @@ namespace Cw05.Controllers
             return Ok(list);
         }
 
-        [HttpPost]
+        [HttpPost("login")]
         public IActionResult Login(LoginRequest request)
         {
             string login = request.Login;
             string password = request.Password;
             string id;
             string name;
+            Guid refreshToken;
            
             using (var con = new SqlConnection("Data Source=db-mssql;Initial Catalog=s19282;Integrated Security=True"))
             using (var com = new SqlCommand())
@@ -92,6 +92,13 @@ namespace Cw05.Controllers
                     id = (string)dr["IndexNumber"];
                     name = (string)dr["FirstName"];
                     dr.Close();
+                    refreshToken = Guid.NewGuid();
+                    com.CommandText = "update student set refreshToken = @newRefreshToken where indexNumber=@id";
+                    com.Parameters.AddWithValue("newRefreshToken", refreshToken);
+                    com.Parameters.AddWithValue("id", id);
+
+                    dr = com.ExecuteReader();
+                    dr.Close();
                 }
                 catch (SqlException e)
                 {
@@ -122,15 +129,13 @@ namespace Cw05.Controllers
             return Ok(new
             {
                 token = new JwtSecurityTokenHandler().WriteToken(token),
-                refreshToken = Guid.NewGuid()
+                refreshToken = refreshToken
             }); ;
         }
 
-        [HttpPost("refresh")]
-        public IActionResult renewBearerToken(LoginRequest request)
+        [HttpPost("refresh/{request}")]
+        public IActionResult renewBearerToken(String request)
         {
-            string login = request.Login;
-            string password = request.Password;
             string id;
             string name;
 
@@ -141,17 +146,14 @@ namespace Cw05.Controllers
                 con.Open();
                 try
                 {
-                    com.CommandText = "select * from Student where IndexNumber=@login";
-                    com.Parameters.AddWithValue("login", login);
+                    com.CommandText = "select * from Student where refreshToken=@token";
+                    com.Parameters.AddWithValue("token", request);
                     var dr = com.ExecuteReader();
                     if (!dr.Read())
                     {
                         dr.Close();
-                        return NotFound("user not found");
+                        return NotFound("refresh token incorrect");
                     }
-                    var validate = BCrypt.Net.BCrypt.Verify(password, (string)dr["Password"]);
-                    if (!validate)
-                        return NotFound("wrong password");
                     id = (string)dr["IndexNumber"];
                     name = (string)dr["FirstName"];
                     dr.Close();
@@ -184,8 +186,7 @@ namespace Cw05.Controllers
 
             return Ok(new
             {
-                token = new JwtSecurityTokenHandler().WriteToken(token),
-                refreshToken = Guid.NewGuid()
+                token = new JwtSecurityTokenHandler().WriteToken(token)
             }); ;
         }
 
