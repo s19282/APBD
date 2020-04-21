@@ -619,3 +619,129 @@ POST
 	"Password" : "admin"
 }
 ---------------
+4/21/2020 8:50:22 PM
+/api/enrollments
+POST
+
+{
+	"Login" : "2",
+	"Password" : "admin"
+}
+---------------
+4/21/2020 8:50:35 PM
+/api/enrollments
+POST
+
+{
+	"Login" : "2",
+	"Password" : "admin"
+}
+---------------
+4/21/2020 8:50:41 PM
+/api/enrollments
+POST
+
+{
+	"Login" : "2",
+	"Password" : "admin"
+}
+---------------
+4/21/2020 8:51:13 PM
+/api/enrollments
+POST
+
+{
+	"Login" : "2",
+	"Password" : "admin"
+}
+---------------
+4/21/2020 8:55:16 PM
+/api/students
+POST
+
+{
+	"Login" : "2",
+	"Password" : "admin"
+}
+---------------
+4/21/2020 8:56:02 PM
+/api/enrollments
+POST
+
+{
+	"Login" : "2",
+	"Password" : "admin"
+}
+---------------
+4/21/2020 8:56:37 PM
+/api/enrollments
+POST
+
+{
+	"Login" : "2",
+	"Password" : "admin"
+}
+---------------
+4/21/2020 8:57:14 PM
+/api/enrollments
+POST
+
+{
+	"Login" : "2",
+	"Password" : "admin"
+}
+---------------
+4/21/2020 8:57:21 PM
+/api/enrollments/promotions
+POST
+
+{
+	"Login" : "2",
+	"Password" : "admin"
+}
+---------------
+4/21/2020 8:57:49 PM
+/api/enrollments/promotions
+POST
+
+{
+	"Login" : "2",
+	"Password" : "admin"
+}
+---------------
+4/21/2020 8:57:58 PM
+/api/enrollments
+POST
+
+{
+	"Login" : "2",
+	"Password" : "admin"
+}
+---------------
+4/21/2020 8:58:45 PM
+/api/enrollments
+POST
+
+{
+	"Login" : "2",
+	"Password" : "admin"
+}
+---------------
+4/21/2020 9:07:16 PM
+/api/enrollments
+POST
+
+{
+	"Login" : "2",
+	"Password" : "admin"
+}
+---------------
+4/21/2020 9:10:55 PM
+/api/enrollments
+POST
+
+{
+	"Login" : "2",
+	"Password" : "admin"
+}
+---------------

@@ -126,5 +126,68 @@ namespace Cw05.Controllers
             }); ;
         }
 
+        [HttpPost("refresh")]
+        public IActionResult renewBearerToken(LoginRequest request)
+        {
+            string login = request.Login;
+            string password = request.Password;
+            string id;
+            string name;
+
+            using (var con = new SqlConnection("Data Source=db-mssql;Initial Catalog=s19282;Integrated Security=True"))
+            using (var com = new SqlCommand())
+            {
+                com.Connection = con;
+                con.Open();
+                try
+                {
+                    com.CommandText = "select * from Student where IndexNumber=@login";
+                    com.Parameters.AddWithValue("login", login);
+                    var dr = com.ExecuteReader();
+                    if (!dr.Read())
+                    {
+                        dr.Close();
+                        return NotFound("user not found");
+                    }
+                    var validate = BCrypt.Net.BCrypt.Verify(password, (string)dr["Password"]);
+                    if (!validate)
+                        return NotFound("wrong password");
+                    id = (string)dr["IndexNumber"];
+                    name = (string)dr["FirstName"];
+                    dr.Close();
+                }
+                catch (SqlException e)
+                {
+                    Console.WriteLine(e.Message);
+                    return BadRequest();
+                }
+            }
+
+            var claims = new[]
+{
+                new Claim(ClaimTypes.NameIdentifier, "s"+id),
+                new Claim(ClaimTypes.Name, name),
+                new Claim(ClaimTypes.Role, "employee")
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken
+            (
+                issuer: "Gakko",
+                audience: "Students",
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(10),
+                signingCredentials: creds
+            );
+
+            return Ok(new
+            {
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                refreshToken = Guid.NewGuid()
+            }); ;
+        }
+
     }
 }
