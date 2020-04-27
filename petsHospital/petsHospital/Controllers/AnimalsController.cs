@@ -4,6 +4,8 @@ using System.Data.SqlClient;
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using petsHospital.DTOs;
+using petsHospital.DTOs.Requests;
+using petsHospital.Models;
 
 namespace petsHospital.Controllers
 {
@@ -45,6 +47,57 @@ namespace petsHospital.Controllers
                 }
             }
             return Ok(list);
+        }
+        [HttpGet("add")]
+        public IActionResult AddAnimals(AddAnimalRequest animal)
+        {
+            using (var con = new SqlConnection("Data Source=db-mssql;Initial Catalog=s19282;Integrated Security=True"))
+            using (var com = new SqlCommand())
+            {
+                com.Connection = con;
+                con.Open();
+                var tran = con.BeginTransaction();
+                try
+                {
+                    com.CommandText = "insert into Animal values(@name,@type,@date,@owner)";
+                    com.Parameters.AddWithValue("name", animal.Name);
+                    com.Parameters.AddWithValue("type", animal.Type);
+                    com.Parameters.AddWithValue("date", animal.AdmissionDate);
+                    com.Parameters.AddWithValue("owner", animal.IdOwner);
+                    var dr = com.ExecuteReader();
+                    dr.Close();
+                    int animalID;
+                    com.CommandText = "select idAnimal from Animal where name=@name and type=@type and admissiondate=@date and idowner=@owner";
+                    dr = com.ExecuteReader();
+                    animalID = (int)dr["idAnimal"];
+                    dr.Close();
+                    foreach(Procedure p in animal.procedures)
+                    {
+                        com.CommandText = "insert into Procedure values(@name,@description)";
+                        com.Parameters.AddWithValue("name", p.Name);
+                        com.Parameters.AddWithValue("description", p.Description);
+                        dr = com.ExecuteReader();
+                        dr.Close();
+                        int procedureID;
+                        com.CommandText = "select idProcedure from procedure where name=@name and description=@description";
+                        dr = com.ExecuteReader();
+                        procedureID = (int)dr["idProcedure"];
+                        dr.Close();
+                        com.CommandText = "insert into Procedure_Animal values(@p, @a, @d)";
+                        com.Parameters.AddWithValue("p", procedureID);
+                        com.Parameters.AddWithValue("a", animalID);
+                        com.Parameters.AddWithValue("d", DateTime.Today.ToString("yyyy-MM-dd"));
+                        dr = com.ExecuteReader();
+                        dr.Close();
+                    }
+                }
+                catch (SqlException e)
+                {
+                    Console.WriteLine(e.Message);
+                    return BadRequest(e.Message);
+                }
+            }
+            return Ok();
         }
     }
 }
