@@ -59,6 +59,7 @@ namespace petsHospital.Controllers
                 var tran = con.BeginTransaction();
                 try
                 {
+                    com.Transaction = tran;
                     com.CommandText = "insert into Animal values(@name,@type,@date,@owner)";
                     com.Parameters.AddWithValue("name", animal.Name);
                     com.Parameters.AddWithValue("type", animal.Type);
@@ -89,11 +90,13 @@ namespace petsHospital.Controllers
                         com.Parameters.AddWithValue("d", DateTime.Today.ToString("yyyy-MM-dd"));
                         dr = com.ExecuteReader();
                         dr.Close();
+                        tran.Commit();
                     }
                 }
                 catch (SqlException e)
                 {
                     Console.WriteLine(e.Message);
+                    tran.Rollback();
                     return BadRequest(e.Message);
                 }
             }
