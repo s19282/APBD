@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace LinqConsoleApp
 {
@@ -279,7 +280,17 @@ namespace LinqConsoleApp
         /// </summary>
         public void Przyklad7()
         {
+            var res = Emps
+                .GroupBy(emp => emp.Job)
+                .Select(emp => new
+                {
+                    Praca = emp.Key,
+                    LiczbaPracownikow = emp.ToList().Count()
+                });
 
+            Console.WriteLine("Przykład 7");
+            foreach (var row in res)
+                Console.WriteLine(row.ToString());
         }
 
         /// <summary>
