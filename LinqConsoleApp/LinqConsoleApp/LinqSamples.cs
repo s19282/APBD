@@ -204,7 +204,9 @@ namespace LinqConsoleApp
                           Nazwisko = emp.Ename,
                           Zawod = emp.Job
                       };
-
+            Console.WriteLine("Przykład 1");
+            foreach (var row in res)
+                Console.WriteLine(row.ToString());
 
             //2. Lambda and Extension methods
         }
@@ -214,8 +216,13 @@ namespace LinqConsoleApp
         /// </summary>
         public void Przyklad2()
         {
-            
+            var res = Emps
+                .Where(emp => emp.Job == "Frontend programmer" && emp.Salary > 1000)
+                .OrderByDescending(emp => emp.Ename);
 
+            Console.WriteLine("Przykład 2");
+            foreach (var row in res)
+                Console.WriteLine(row.ToString());
         }
 
         /// <summary>
