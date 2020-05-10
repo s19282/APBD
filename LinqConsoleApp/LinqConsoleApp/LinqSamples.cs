@@ -360,8 +360,7 @@ namespace LinqConsoleApp
                     return b;
             });
 
-
-            Console.WriteLine("Przykład 10");
+            Console.WriteLine("Przykład 11");
             Console.WriteLine(res.showAll());
         }
 
@@ -369,6 +368,16 @@ namespace LinqConsoleApp
         //typu CROSS JOIN
         public void Przyklad12()
         {
+            var res = Emps.SelectMany(dept => Depts, (emp, dept) => new
+            {
+               Dept=dept,
+               Emp=emp
+            });
+
+
+            Console.WriteLine("Przykład 12");
+            foreach (var row in res)
+                Console.WriteLine("Dept: "+row.Dept.ToString()+" Emp: "+row.Emp.showAll());
 
         }
     }

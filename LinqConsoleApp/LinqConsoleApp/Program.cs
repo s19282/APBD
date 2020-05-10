@@ -18,6 +18,7 @@ namespace LinqConsoleApp
             d.Przyklad9();
             d.Przyklad10();
             d.Przyklad11();
+            d.Przyklad12();
         }
     }
 }
