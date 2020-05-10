@@ -207,7 +207,7 @@ namespace LinqConsoleApp
             Console.WriteLine("Przykład 1");
             foreach (var row in res)
                 Console.WriteLine(row.ToString());
-
+            Console.WriteLine();
             //2. Lambda and Extension methods
         }
 
@@ -223,14 +223,18 @@ namespace LinqConsoleApp
             Console.WriteLine("Przykład 2");
             foreach (var row in res)
                 Console.WriteLine(row.ToString());
+            Console.WriteLine();
         }
-
         /// <summary>
         /// SELECT MAX(Salary) FROM Emps;
         /// </summary>
         public void Przyklad3()
         {
-          
+            var res = Emps.Max(emp => emp.Salary);
+
+            Console.WriteLine("Przykład 3");
+            Console.WriteLine("Max salary: "+res);
+            Console.WriteLine();
         }
 
         /// <summary>
