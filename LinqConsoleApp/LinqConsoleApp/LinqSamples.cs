@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Threading;
 
@@ -325,9 +326,27 @@ namespace LinqConsoleApp
         /// UNION
         /// SELECT "Brak wartości", null, null;
         /// </summary>
-        public void Przyklad10Button_Click()
+        public void Przyklad10()
         {
+            var res = Emps
+                .Select(emp => new
+                {
+                    emp.Ename,
+                    emp.Job,
+                    emp.HireDate
+                })
+                .Union(Emps
+                .Select(emp => new
+                {
+                    Ename="Brak wartości",
+                    Job= (string)null,
+                    HireDate= (DateTime?)null
+                }));
 
+
+            Console.WriteLine("Przykład 10");
+            foreach (var row in res)
+                Console.WriteLine(row.ToString());
         }
 
         //Znajdź pracownika z najwyższą pensją wykorzystując metodę Aggregate()
