@@ -261,7 +261,17 @@ namespace LinqConsoleApp
         /// </summary>
         public void Przyklad6()
         {
+            var res = Emps
+                .Join(Depts, emp => emp.Deptno, dept => dept.Deptno, (emp, dept) => new
+                {
+                    emp.Ename,
+                    emp.Job,
+                    dept.Dname
+                });
 
+            Console.WriteLine("Przykład 6");
+            foreach (var row in res)
+                Console.WriteLine(row.ToString());
         }
 
         /// <summary>
