@@ -299,6 +299,9 @@ namespace LinqConsoleApp
         /// </summary>
         public void Przyklad8()
         {
+            var res = Emps.Any(emp => emp.Job == "Backend programmer");
+            Console.WriteLine("Przykład 8");
+            Console.WriteLine(res);
 
         }
 
