@@ -246,7 +246,12 @@ namespace LinqConsoleApp
         /// </summary>
         public void Przyklad5()
         {
+            var res = Emps
+                .Select(emp => new { Nazwisko = emp.Ename, Praca = emp.Job });
 
+            Console.WriteLine("Przykład 5");
+            foreach (var row in res)
+                Console.WriteLine(row.ToString());
         }
 
         /// <summary>
