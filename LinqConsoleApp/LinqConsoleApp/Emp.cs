@@ -18,5 +18,9 @@ namespace LinqConsoleApp
         {
             return Ename + " (" + Empno + ")";
         }
+        public string showAll()
+        {
+            return Empno + " " + Ename + " " + Job + " " + Salary + " " + HireDate + " " + Deptno + " " + Mgr;
+        }
     }
 }

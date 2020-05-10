@@ -190,25 +190,13 @@ namespace LinqConsoleApp
         /// </summary>
         public void Przyklad1()
         {
-            //var res = new List<Emp>();
-            //foreach(var emp in Emps)
-            //{
-            //    if (emp.Job == "Backend programmer") res.Add(emp);
-            //}
+            var res = Emps
+               .Where(emp => emp.Job == "Backend programmer");
 
-            //1. Query syntax (SQL)
-            var res = from emp in Emps
-                      where emp.Job == "Backend programmer"
-                      select new
-                      {
-                          Nazwisko = emp.Ename,
-                          Zawod = emp.Job
-                      };
             Console.WriteLine("Przykład 1");
             foreach (var row in res)
-                Console.WriteLine(row.ToString());
+                Console.WriteLine(row.showAll());
             Console.WriteLine();
-            //2. Lambda and Extension methods
         }
 
         /// <summary>
@@ -222,7 +210,7 @@ namespace LinqConsoleApp
 
             Console.WriteLine("Przykład 2");
             foreach (var row in res)
-                Console.WriteLine(row.ToString());
+                Console.WriteLine(row.showAll());
             Console.WriteLine();
         }
         /// <summary>
@@ -242,7 +230,15 @@ namespace LinqConsoleApp
         /// </summary>
         public void Przyklad4()
         {
+            var res = Emps
+                .Where(emp => emp.Salary == Emps.Max(emp => emp.Salary))
+                .Select(emp=>emp);
+                
 
+            Console.WriteLine("Przykład 4");
+            foreach (var row in res)
+                Console.WriteLine(row.showAll());
+            Console.WriteLine();
         }
 
         /// <summary>
