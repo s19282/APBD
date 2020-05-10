@@ -302,7 +302,6 @@ namespace LinqConsoleApp
             var res = Emps.Any(emp => emp.Job == "Backend programmer");
             Console.WriteLine("Przykład 8");
             Console.WriteLine(res);
-
         }
 
         /// <summary>
@@ -311,7 +310,14 @@ namespace LinqConsoleApp
         /// </summary>
         public void Przyklad9()
         {
+            var res = Emps
+                .Where(emp => emp.Job == "Frontend programmer")
+                .OrderByDescending(emp => emp.HireDate)
+                .FirstOrDefault();
 
+            Console.WriteLine("Przykład 9");
+            Console.WriteLine(res.showAll());
+            Console.WriteLine();
         }
 
         /// <summary>
