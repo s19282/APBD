@@ -286,7 +286,7 @@ namespace LinqConsoleApp
                 .Select(emp => new
                 {
                     Praca = emp.Key,
-                    LiczbaPracownikow = emp.ToList().Count()
+                    LiczbaPracownikow = emp.Count()
                 });
 
             Console.WriteLine("Przykład 7");
