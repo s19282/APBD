@@ -12,6 +12,7 @@ using Cw05.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -27,40 +28,85 @@ namespace Cw05.Controllers
             Configuration = configuration;
         }
 
-        [HttpGet]
-        public IActionResult GetStudents()
+
+        [HttpGet("EFget")]
+        public IActionResult EFGetStudents()
         {
-            var list = new List<Student>();
-
-            using (var con = new SqlConnection("Data Source=db-mssql;Initial Catalog=s19282;Integrated Security=True"))
-            using (var com = new SqlCommand())
-            {
-                com.Connection = con;
-                con.Open();
-                try
-                {
-                    com.CommandText = "select * from Student join enrollment on student.idEnrollment=enrollment.idEnrollment join studies on enrollment.idStudy=studies.idStudy";
-                    var dr = com.ExecuteReader();
-                    if (!dr.Read())
-                    {
-                        dr.Close();
-                        return null;
-                    }
-                    while(dr.Read())
-                    {
-                        list.Add(new Student("s" + dr["IndexNumber"], (string)dr["FirstName"], (string)dr["LastName"], (DateTime)dr["BirthDate"], (string)dr["Name"]));
-                    }
-                    dr.Close();
-                }
-                catch (SqlException e)
-                {
-                    Console.WriteLine(e.Message);
-                    return null;
-                }
-            }
-
-            return Ok(list);
+            var db = new s19282Context();
+            return Ok(db.Student.ToList());
         }
+
+        [HttpGet("EFmodify")]
+        public IActionResult EFModifyStudent(ModifyStudentRequest s)
+        {
+            var db = new s19282Context();
+            var student = db.Student.Where(d=>d.IndexNumber==s.IndexNumber).First();
+            if(s.FirstName!=null)
+                student.FirstName = s.FirstName;
+            if (s.LastName!=null)
+                student.LastName = s.LastName;
+            if (s.BirthDate!=null)
+                student.BirthDate = s.BirthDate;
+            db.Attach(student);
+            db.Entry(student).State = EntityState.Modified;
+            db.SaveChanges();
+            return Ok();
+        }
+
+        [HttpGet("EFdelete")]
+        public IActionResult EFDeleteStudent(string index)
+        {
+            var db = new s19282Context();
+
+            //var d = db.Doctor.OrderByDescending(d => d.IdDoctor).First();
+            //db.Doctor.Remove(d);
+
+            var d = new Student
+            {
+                IndexNumber = index
+            };
+            db.Attach(d);
+            db.Remove(d);
+            db.Entry(d).State = EntityState.Deleted;
+            db.SaveChanges();
+
+            return Ok();
+        }
+
+        //[HttpGet]
+        //public IActionResult GetStudents()
+        //{
+        //    var list = new List<Student>();
+
+        //    using (var con = new SqlConnection("Data Source=db-mssql;Initial Catalog=s19282;Integrated Security=True"))
+        //    using (var com = new SqlCommand())
+        //    {
+        //        com.Connection = con;
+        //        con.Open();
+        //        try
+        //        {
+        //            com.CommandText = "select * from Student join enrollment on student.idEnrollment=enrollment.idEnrollment join studies on enrollment.idStudy=studies.idStudy";
+        //            var dr = com.ExecuteReader();
+        //            if (!dr.Read())
+        //            {
+        //                dr.Close();
+        //                return null;
+        //            }
+        //            while(dr.Read())
+        //            {
+        //                list.Add(new Student("s" + dr["IndexNumber"], (string)dr["FirstName"], (string)dr["LastName"], (DateTime)dr["BirthDate"], (string)dr["Name"]));
+        //            }
+        //            dr.Close();
+        //        }
+        //        catch (SqlException e)
+        //        {
+        //            Console.WriteLine(e.Message);
+        //            return null;
+        //        }
+        //    }
+
+        //    return Ok(list);
+        //}
 
         [HttpPost("login")]
         public IActionResult Login(LoginRequest request)

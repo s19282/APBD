@@ -17,25 +17,24 @@ namespace Cw05.Models
 
         public virtual Enrollment IdEnrollmentNavigation { get; set; }
 
-        public string Studies { get; set; }
+        //public string Studies { get; set; }
 
 
-        public Student(string index, string fname, string lname, DateTime bdate, string studies)
+        public Student(ModifyStudentRequest msr)
         {
-            IndexNumber = index;
-            FirstName = fname;
-            LastName = lname;
-            BirthDate = bdate;
-            Studies = studies;
+            IndexNumber = msr.IndexNumber;
+            FirstName = msr.FirstName;
+            LastName = msr.LastName;
+            BirthDate = msr.BirthDate;
         }
-        public Student(EnrollStudentRequest esr)
-        {
-            this.IndexNumber = esr.IndexNumber;
-            this.FirstName = esr.FirstName;
-            this.LastName = esr.LastName;
-            this.BirthDate = esr.BirthDate;
-            this.Studies = esr.Studies;
-        }
+        //public Student(EnrollStudentRequest esr)
+        //{
+        //    this.IndexNumber = esr.IndexNumber;
+        //    this.FirstName = esr.FirstName;
+        //    this.LastName = esr.LastName;
+        //    this.BirthDate = esr.BirthDate;
+        //    this.Studies = esr.Studies;
+        //}
 
         public Student()
         {
