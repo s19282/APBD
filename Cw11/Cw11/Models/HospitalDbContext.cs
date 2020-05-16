@@ -12,6 +12,7 @@ namespace Cw11.Models
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Prescription> Prescriptions { get; set; }
+        public DbSet<Medicament> Medicaments { get; set; }
 
         public HospitalDbContext() { }
 
@@ -23,6 +24,7 @@ namespace Cw11.Models
             modelBuilder.ApplyConfiguration(new DoctorConfiguration());
             modelBuilder.ApplyConfiguration(new PatientConfiguration());
             modelBuilder.ApplyConfiguration(new PrescriptionConfiguration());
+            modelBuilder.ApplyConfiguration(new MedicamentConfiguration());
         }
     }
 }
