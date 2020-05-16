@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cw05.Middleware;
-using Cw05.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -43,8 +42,8 @@ namespace Cw05
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]))
                     };
                 });
-            services.AddScoped<IStudentDbService, SqlServerStudentDbService>();
-            services.AddTransient<IStudentDbService, SqlServerStudentDbService>();
+            //services.AddScoped<IStudentDbService, SqlServerStudentDbService>();
+            //services.AddTransient<IStudentDbService, SqlServerStudentDbService>();
             services.AddControllers();
             services.AddSwaggerGen(config=> 
             {
@@ -53,7 +52,7 @@ namespace Cw05
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,IStudentDbService service)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)//,IStudentDbService service)
         {
             if (env.IsDevelopment())
             {
@@ -73,13 +72,13 @@ namespace Cw05
                     return;
                 }
                 string index = context.Request.Headers["Index"].ToString();
-                var student = service.GetStudent(index);
-                if(student == null)
-                {
-                    context.Response.StatusCode = StatusCodes.Status404NotFound;
-                    await context.Response.WriteAsync("Nie znaleziono studenta w bazie danych");
-                    return;
-                }
+                //var student = service.GetStudent(index);
+                //if(student == null)
+                //{
+                //    context.Response.StatusCode = StatusCodes.Status404NotFound;
+                //    await context.Response.WriteAsync("Nie znaleziono studenta w bazie danych");
+                //    return;
+                //}
                 await next();
             });
 

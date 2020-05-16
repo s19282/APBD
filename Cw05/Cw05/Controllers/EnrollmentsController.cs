@@ -1,15 +1,11 @@
 ﻿using Cw05.DTOs.Requests;
 using Cw05.DTOs.Responses;
 using Cw05.Models;
-using Cw05.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
-using System;
 using System.Linq;
-using System.Web;
 
 namespace Cw05.Controllers
 {
@@ -18,12 +14,6 @@ namespace Cw05.Controllers
     [Authorize(Roles ="employee")]
     public class EnrollmentsController : ControllerBase
     {
-
-        private IStudentDbService _service;
-        public EnrollmentsController(IStudentDbService service)
-        {
-            _service = service;
-        }
 
         [HttpPost]
         public IActionResult EnrollStudent(EnrollStudentRequest request)
@@ -70,12 +60,37 @@ namespace Cw05.Controllers
         {
             var db = new s19282Context();
             var studies = db.Enrollment
-                .Join(db.Studies, e => e.IdStudy, s => s.IdStudy, (e, s) => new { s.Name, s.IdStudy, e.Semester })
+                .Join(db.Studies, e => e.IdStudy, s => s.IdStudy, (e, s) => new { s.Name, s.IdStudy, e.Semester,e.IdEnrollment })
                 .Where(e => e.Semester == request.Semester && e.Name.Equals(request.Studies)).FirstOrDefault();
             if (studies == null)
                 return NotFound();
-            db.ExecuteSqlRaw("Exec promoteStudents ..............");
-            return Ok();
+
+            var enrollment = db.Enrollment.Where(e => e.Semester == studies.Semester+1)
+                .Join(db.Studies,e=>e.IdEnrollment,s=>s.IdStudy,(e,s)=> new { e.IdEnrollment, e.Semester, e.IdStudy, e.StartDate }).FirstOrDefault();
+            if(enrollment==null)
+            {
+                enrollment = new
+                {
+                    IdEnrollment = db.Enrollment.OrderBy(e => e.IdEnrollment).Last().IdEnrollment + 1,
+                    Semester = studies.Semester+1,
+                    studies.IdStudy,
+                    StartDate = DateAndTime.Today
+                };
+                db.Attach(enrollment);
+                db.Entry(enrollment).State = EntityState.Modified;
+            }
+
+            var updateStudents = db.Student.Where(s => s.IdEnrollment == studies.IdEnrollment);
+            foreach(var s in updateStudents)
+            {
+                s.IdEnrollment = enrollment.IdEnrollment;
+            }
+            db.Attach(updateStudents);
+            db.Entry(updateStudents).State = EntityState.Modified;
+            db.SaveChanges();
+
+            
+            return Created("",enrollment);
         }
 
     }
