@@ -9,7 +9,8 @@ namespace Cw11.Models
 {
     public class HospitalDbContext : DbContext
     {
-       public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Patient> Patients { get; set; }
 
         public HospitalDbContext() { }
 
@@ -19,6 +20,7 @@ namespace Cw11.Models
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new DoctorConfiguration());
+            modelBuilder.ApplyConfiguration(new PatientConfiguration());
         }
     }
 }
