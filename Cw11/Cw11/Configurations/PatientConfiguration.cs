@@ -12,6 +12,7 @@ namespace Cw11.Configurations
             builder.Property(d => d.FirstName).HasMaxLength(150).IsRequired();
             builder.Property(d => d.LastName).HasMaxLength(200).IsRequired();
             builder.Property(d => d.BirdthDate).IsRequired();
+            //builder.Property(d => d.Prescriptions).HasColumnName("IdDoctor");
         }
     }
 }

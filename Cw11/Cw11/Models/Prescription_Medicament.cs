@@ -1,14 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Cw11.Models
 {
     public class Prescription_Medicament
     {
-        public int IdMedicament { get; set; }
-        public int IdPrescription { get; set; }
+        [Key]
+        [ForeignKey("medicament")]
+        public int? IdMedicament { get; set; }
+        public Medicament medicament { get; set; }
+        [Key]
+        [ForeignKey("prescription")]
+        public int? IdPrescription { get; set; }
+        public Prescription prescription { get; set; }
         public int? Dose { get; set; }
         public string Details { get; set; }
     }

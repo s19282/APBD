@@ -5,6 +5,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200516223053_AddedTmpRelations.cs" />
+    <Compile Remove="Migrations\20200516223053_AddedTmpRelations.Designer.cs" />
+    <Compile Remove="Migrations\20200517095634_TestingRelations.cs" />
+    <Compile Remove="Migrations\20200517095634_TestingRelations.Designer.cs" />
+    <Compile Remove="Migrations\20200517100744_AddedPrescriptionsMedicamentsRelations.cs" />
+    <Compile Remove="Migrations\20200517100744_AddedPrescriptionsMedicamentsRelations.Designer.cs" />
+    <Compile Remove="Migrations\20200517103408_tmp.cs" />
+    <Compile Remove="Migrations\20200517103408_tmp.Designer.cs" />
+    <Compile Remove="Migrations\20200517105326_tmp.cs" />
+    <Compile Remove="Migrations\20200517105326_tmp.Designer.cs" />
+    <Compile Remove="Migrations\20200517105906_tmp22.cs" />
+    <Compile Remove="Migrations\20200517105906_tmp22.Designer.cs" />
+    <Compile Remove="Migrations\20200517111831_testtest.cs" />
+    <Compile Remove="Migrations\20200517111831_testtest.Designer.cs" />
+    <Compile Remove="Migrations\20200517112505_hello.cs" />
+    <Compile Remove="Migrations\20200517112505_hello.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.4">
