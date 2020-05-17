@@ -1,4 +1,5 @@
 ﻿using Cw11.Models;
+using Cw11.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cw11.Controllers
@@ -8,14 +9,16 @@ namespace Cw11.Controllers
     public class HospitalController : ControllerBase
     {
 
-        private readonly HospitalDbContext _context;
-        public HospitalController(HospitalDbContext context)
+        private readonly IHospitalDbService _context;
+        public HospitalController(IHospitalDbService context)
         {
             _context = context;
         }
+        [HttpGet("doctors")]
         public IActionResult GetDoctor()
         {
-            return Ok();
+            return Ok(_context.GetDoctors());
         }
+
     }
 }
