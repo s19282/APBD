@@ -26,6 +26,8 @@ namespace Cw11.Models
             modelBuilder.ApplyConfiguration(new PrescriptionConfiguration());
             modelBuilder.ApplyConfiguration(new MedicamentConfiguration());
             modelBuilder.ApplyConfiguration(new Prescription_MedicamentConfiguration());
+
+            InsertData(modelBuilder);
         }
         public void InsertData(ModelBuilder modelBuilder)
         {
