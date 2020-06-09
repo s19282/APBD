@@ -4,14 +4,16 @@ using AdvertApi.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AdvertApi.Migrations
 {
     [DbContext(typeof(AdvertsDbContext))]
-    partial class AdvertsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200609080149_AddedCampaignTable")]
+    partial class AddedCampaignTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,13 +59,6 @@ namespace AdvertApi.Migrations
                     b.Property<decimal>("Area")
                         .HasColumnType("decimal(5, 2)");
 
-                    b.Property<int?>("CampaignIdCampaign")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdCampaign")
-                        .HasColumnType("int")
-                        .HasAnnotation("ForeignKey", "IdCampaign");
-
                     b.Property<int>("Name")
                         .HasColumnType("int");
 
@@ -71,8 +66,6 @@ namespace AdvertApi.Migrations
                         .HasColumnType("decimal(5, 2)");
 
                     b.HasKey("IdAdvertisment");
-
-                    b.HasIndex("CampaignIdCampaign");
 
                     b.ToTable("Banners");
                 });
@@ -84,20 +77,8 @@ namespace AdvertApi.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ClientIdClient")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("Date");
-
-                    b.Property<int?>("FBulidlingIdBuilding")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("FromIdBuilding")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdClient")
-                        .HasColumnType("int");
 
                     b.Property<decimal>("PricePreSquareMeter")
                         .HasColumnType("decimal(5, 2)");
@@ -105,19 +86,7 @@ namespace AdvertApi.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("Date");
 
-                    b.Property<int?>("TBulidlingIdBuilding")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ToIdBuilding")
-                        .HasColumnType("int");
-
                     b.HasKey("IdCampaign");
-
-                    b.HasIndex("ClientIdClient");
-
-                    b.HasIndex("FBulidlingIdBuilding");
-
-                    b.HasIndex("TBulidlingIdBuilding");
 
                     b.ToTable("Campaigns");
                 });
@@ -150,28 +119,6 @@ namespace AdvertApi.Migrations
                     b.HasKey("IdClient");
 
                     b.ToTable("Clients");
-                });
-
-            modelBuilder.Entity("AdvertApi.Models.Banner", b =>
-                {
-                    b.HasOne("AdvertApi.Models.Campaign", "Campaign")
-                        .WithMany("Banners")
-                        .HasForeignKey("CampaignIdCampaign");
-                });
-
-            modelBuilder.Entity("AdvertApi.Models.Campaign", b =>
-                {
-                    b.HasOne("AdvertApi.Models.Client", "Client")
-                        .WithMany("Campaigns")
-                        .HasForeignKey("ClientIdClient");
-
-                    b.HasOne("AdvertApi.Model.Building", "FBulidling")
-                        .WithMany("CampaignsFrom")
-                        .HasForeignKey("FBulidlingIdBuilding");
-
-                    b.HasOne("AdvertApi.Model.Building", "TBulidling")
-                        .WithMany("CampaignsTo")
-                        .HasForeignKey("TBulidlingIdBuilding");
                 });
 #pragma warning restore 612, 618
         }
