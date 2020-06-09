@@ -12,6 +12,7 @@ namespace AdvertApi.Model
             _context = context;
         }
 
+        [HttpGet]
         public IActionResult GetAdverts()
         {
             return Ok();
