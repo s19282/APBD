@@ -1,6 +1,7 @@
 ﻿using AdvertApi.DTOs.Requests;
 using AdvertApi.DTOs.Responses;
 using AdvertApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -115,6 +116,15 @@ namespace AdvertApi.Model
                 RefreshToken = refreshToken.ToString()
             });
         }
-
+        [HttpPost("campaigns")]
+        [Authorize]
+        public IActionResult GetCampaings()
+        {
+            var campaigns = _context.Campaigns
+                .Join(_context.Clients, ca => ca.IdClient, cl => cl.IdClient, (ca, cl) =>
+                      new { Campaign = ca, Client = cl })
+                .OrderByDescending(c => c.Campaign.StartDate);
+            return Ok(campaigns);
+        }
     }
 }
