@@ -1,17 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace AdvertApi.Models
+namespace AdvertApi.DTOs.Requests
 {
-    public class Client
-    {
-        public int IdClient { get; set; }
+    public class AddClientRequest
+    {   
+        [Required]
         public string FirstName { get; set; }
+        [Required]
         public string LastName { get; set; }
+        [Required]
         public string Email { get; set; }
+        [Required]
         public string Phone { get; set; }
+        [Required]
         public string Login { get; set; }
-        public virtual ICollection<Campaign> Campaigns { get; set; }
+        [MinLength(8)]
+        [Required]
         public string Password { get; set; }
-
     }
 }
