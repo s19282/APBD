@@ -35,6 +35,8 @@ namespace AdvertApi.Model
             modelBuilder.Entity<Building>()
                 .HasMany(b => b.CampaignsTo)
                 .WithOne(c => c.TBulidling);
+
+            modelBuilder.Entity<Client>().HasIndex(c => c.Login).IsUnique();
         }
     }
 }

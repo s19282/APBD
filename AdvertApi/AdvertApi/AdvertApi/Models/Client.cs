@@ -12,6 +12,7 @@ namespace AdvertApi.Models
         public string Login { get; set; }
         public virtual ICollection<Campaign> Campaigns { get; set; }
         public string Password { get; set; }
+        public string RefreshToken { get; set; }
 
     }
 }
