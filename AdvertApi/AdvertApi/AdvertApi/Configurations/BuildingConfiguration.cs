@@ -16,7 +16,7 @@ namespace AdvertApi.Configurations
             builder.Property(b => b.Street).HasMaxLength(100).IsRequired();
             builder.Property(b => b.StreetNumber).HasColumnType("int").IsRequired();
             builder.Property(b => b.City).HasMaxLength(100).IsRequired();
-            builder.Property(b => b.Height).HasColumnType("decimal(5, 2)");
+            builder.Property(b => b.Height).HasColumnType("decimal(6, 2)");
         }
     }
 }

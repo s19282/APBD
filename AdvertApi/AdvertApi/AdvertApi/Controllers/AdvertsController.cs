@@ -70,7 +70,7 @@ namespace AdvertApi.Model
                 issuer: "s19282",
                 audience: "Clients",
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(10),
+                expires: DateTime.Now.AddMinutes(60),
                 signingCredentials: creds
             );
             _context.SaveChanges();
@@ -106,7 +106,7 @@ namespace AdvertApi.Model
                 issuer: "s19282",
                 audience: "Clients",
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(10),
+                expires: DateTime.Now.AddMinutes(60),
                 signingCredentials: creds
             );
             _context.SaveChanges();
@@ -125,6 +125,64 @@ namespace AdvertApi.Model
                       new { Campaign = ca, Client = cl })
                 .OrderByDescending(c => c.Campaign.StartDate);
             return Ok(campaigns);
+        }
+        [HttpPost("campaigns/create")]
+        [Authorize]
+        public IActionResult NewCampaign(NewCampaignRequest req)
+        {
+            if (_context.Buildings.Count() < 2)
+                return NotFound("No buildings in the database");
+            var B1 = _context.Buildings.Where(b => b.IdBuilding.Equals(req.FromIdBuilding)).FirstOrDefault();
+            var B2 = _context.Buildings.Where(b => b.IdBuilding.Equals(req.ToIdBuilding)).FirstOrDefault();
+
+            if (!B1.Street.Equals(B2.Street))
+                return BadRequest("The buildings are not next to each other");
+
+            var buildings = _context.Buildings.Where(b => b.StreetNumber >= B1.StreetNumber && b.StreetNumber <= B2.StreetNumber).OrderBy(b=>b.StreetNumber).ToList();
+            int howManyBuildings = buildings.Count();
+
+            Campaign campaign = new Campaign { IdClient = req.IdClient, StartDate = req.StartDate, EndDate = req.EndDate, PricePerSquareMeter = req.PricePerSquareMeter, FromIdBuilding = req.FromIdBuilding, ToIdBuilding = req.ToIdBuilding };
+            _context.Campaigns.Add(campaign);
+            _context.SaveChanges();
+
+            Banner banner1 = new Banner { };
+            Banner banner2 = new Banner { };
+
+            for (int i=1; i<howManyBuildings-1; i++)
+            {
+                decimal height1Max = 0;
+                decimal height2Max = 0;
+                Banner tmpBanner1 = new Banner { Name = 1,IdCampaign = campaign.IdCampaign };
+                Banner tmpBanner2 = new Banner { Name = 2,IdCampaign = campaign.IdCampaign };
+                for(int j=0; j<howManyBuildings; j++)
+                {
+                    var tmpBuilding = buildings.ElementAt(j);
+
+                    if (j < i && tmpBuilding.Height > height1Max)
+                        height1Max = tmpBuilding.Height;
+
+                    if (j == i)
+                    {
+                        tmpBanner1.Area = height1Max * i;
+                        tmpBanner1.Price = tmpBanner1.Area * req.PricePerSquareMeter;
+                    }
+
+                    if (j >= i && tmpBuilding.Height > height2Max)
+                        height2Max = tmpBuilding.Height;
+                }
+                tmpBanner2.Area = height2Max * (howManyBuildings-i);
+                tmpBanner2.Price = tmpBanner2.Area * req.PricePerSquareMeter;
+                if ((banner1.Area == 0 && banner2.Area == 0) || (tmpBanner1.Area + tmpBanner2.Area < banner1.Area + banner2.Area))
+                {
+                    banner1 = tmpBanner1;
+                    banner2 = tmpBanner2;
+                }
+            }
+
+            _context.Banners.AddRange(banner1, banner2);
+            _context.SaveChanges();
+
+            return Created("",new NewCampaignResponse{ Campaign=campaign,Banner1=banner1,Banner2=banner2 });
         }
     }
 }

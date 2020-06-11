@@ -4,14 +4,16 @@ using AdvertApi.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AdvertApi.Migrations
 {
     [DbContext(typeof(AdvertsDbContext))]
-    partial class AdvertsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200611110912_IncreasedSizeOfDecimalValues")]
+    partial class IncreasedSizeOfDecimalValues
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

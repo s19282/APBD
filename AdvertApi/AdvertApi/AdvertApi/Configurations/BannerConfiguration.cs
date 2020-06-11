@@ -10,8 +10,8 @@ namespace AdvertApi.Configurations
         {
             builder.HasKey(b => b.IdAdvertisment);
             builder.Property(b => b.Name).HasColumnType("int");
-            builder.Property(b => b.Price).HasColumnType("decimal(5, 2)").IsRequired();
-            builder.Property(b => b.Area).HasColumnType("decimal(5, 2)").IsRequired();
+            builder.Property(b => b.Price).HasColumnType("decimal(6, 2)").IsRequired();
+            builder.Property(b => b.Area).HasColumnType("decimal(6, 2)").IsRequired();
             builder.Property(b => b.IdCampaign).HasAnnotation("ForeignKey","IdCampaign");
         }
     }

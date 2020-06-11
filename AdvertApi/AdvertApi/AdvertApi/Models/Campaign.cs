@@ -15,7 +15,7 @@ namespace AdvertApi.Models
         public Client Client { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public double PricePreSquareMeter { get; set; }
+        public decimal PricePerSquareMeter { get; set; }
         public virtual ICollection<Banner> Banners { get; set; }
         //[ForeignKey("FromIdBuilding")]
         public int? FromIdBuilding { get; set; }

@@ -4,14 +4,16 @@ using AdvertApi.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AdvertApi.Migrations
 {
     [DbContext(typeof(AdvertsDbContext))]
-    partial class AdvertsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200611102327_ChangedDataTypeFromDoubleToDecimal")]
+    partial class ChangedDataTypeFromDoubleToDecimal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,7 +34,7 @@ namespace AdvertApi.Migrations
                         .HasMaxLength(100);
 
                     b.Property<decimal>("Height")
-                        .HasColumnType("decimal(6, 2)");
+                        .HasColumnType("decimal(5, 2)");
 
                     b.Property<string>("Street")
                         .IsRequired()
@@ -55,7 +57,7 @@ namespace AdvertApi.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Area")
-                        .HasColumnType("decimal(6, 2)");
+                        .HasColumnType("decimal(5, 2)");
 
                     b.Property<int?>("CampaignIdCampaign")
                         .HasColumnType("int");
@@ -68,7 +70,7 @@ namespace AdvertApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(6, 2)");
+                        .HasColumnType("decimal(5, 2)");
 
                     b.HasKey("IdAdvertisment");
 
@@ -100,7 +102,7 @@ namespace AdvertApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("PricePerSquareMeter")
-                        .HasColumnType("decimal(6, 2)");
+                        .HasColumnType("decimal(5, 2)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("Date");
