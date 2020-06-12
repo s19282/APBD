@@ -47,6 +47,7 @@ namespace AdvertApi.Model
             AddClientResponse resp = new AddClientResponse { FirstName = client.FirstName, LastName = client.LastName, Email = client.Email, Phone = client.Phone, Login = client.Login };
             return Created("",resp);
         }
+
         [HttpPost("clients/login")]
         public IActionResult LoginClient(LoginClientRequest req)
         {
