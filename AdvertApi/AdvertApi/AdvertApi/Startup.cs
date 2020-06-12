@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AdvertApi.Model;
+using AdvertApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -47,6 +48,7 @@ namespace AdvertApi
             {
                 options.UseSqlServer("Data Source=db-mssql;Initial Catalog=s19282;Integrated Security=True");
             });
+            services.AddTransient<IAdvertService, CalculateAreaService>();
             services.AddControllers();
             services.AddSwaggerGen(config =>
             {
