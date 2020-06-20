@@ -49,6 +49,7 @@ namespace AdvertApi
                 options.UseSqlServer("Data Source=db-mssql;Initial Catalog=s19282;Integrated Security=True");
             });
             services.AddTransient<IAdvertService, CalculateAreaService>();
+            services.AddTransient<IAdvertDbService, EfAdvertDbService>();
             services.AddControllers();
             services.AddSwaggerGen(config =>
             {

@@ -11,11 +11,9 @@ namespace AdvertApi.Model
     [ApiController]
     public class AdvertsController : ControllerBase
     {
-        private readonly AdvertsDbContext _context;
         private IAdvertDbService _dbService;
-        public AdvertsController(AdvertsDbContext context,IAdvertDbService dbService)
+        public AdvertsController(IAdvertDbService dbService)
         {
-            _context = context;
             _dbService = dbService;
         }
 
