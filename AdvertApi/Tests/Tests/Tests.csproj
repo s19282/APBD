@@ -14,10 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="IntegrationTests\Adverts\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\AdvertApi\AdvertApi\AdvertApi.csproj" />
   </ItemGroup>
 
